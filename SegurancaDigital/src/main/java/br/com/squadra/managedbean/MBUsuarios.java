@@ -26,7 +26,11 @@ public class MBUsuarios implements Serializable{
     
     private String senha;
 
-    public void logar(){
+    /**
+     * Metodo para logar no sistema
+     * @return Retorna para a pagina de pesquisa
+     */
+    public String logar(){
         try {
             bUsuario = ControllerUsuarios.getInstance().pesqId(em, bUsuario.getIdUsuario());
             if(bUsuario != null){
@@ -34,6 +38,7 @@ public class MBUsuarios implements Serializable{
                 if(bUsuario.getSenha().equals(Criptografia.criptografiaSenha(senha))){
                     HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                     httpSession.setAttribute("usuario", bUsuario.getNome());
+                    return "sistema/pesquisa.xhtml";
                 }else{
                     Mensagem.getInstance().erro("Usuário sem permissão para entrar no sistema.");
                 }
@@ -43,6 +48,17 @@ public class MBUsuarios implements Serializable{
         } catch (Exception e) {
             Mensagem.getInstance().erro(e.getMessage());
         }
+        return "";
+    }
+    
+    /**
+     * Metodo para deslogar do sistema
+     * @return Retorna para a pagina de login
+     */
+    public String deslogar(){
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        httpSession.removeAttribute("usuario");
+        return "/index.xhtml";
     }
 
     
