@@ -1,8 +1,12 @@
 package br.com.squadra.util;
 
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Disposes;
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -12,7 +16,10 @@ import javax.persistence.Persistence;
 public class PersistenceFactory {
 
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("squadraPU");
-    private static EntityManager em = null;
+
+    // again, the container injects it
+//    @PersistenceContext(unitName = "squadraPU")
+    private EntityManager em;
 
     /**
      * Método estático responsável por fornecer uma referência à instância
@@ -20,25 +27,23 @@ public class PersistenceFactory {
      *
      * @return EntityManager
      */
-    public static EntityManager createEntityManager() {
-        if (em == null || !em.isOpen()) {
-            return em = emf.createEntityManager();
-        } else {
-            return em;
-        }
+    @Produces
+    @RequestScoped
+    public EntityManager createEntityManager() {
+        return emf.createEntityManager();
     }
 
     /**
      * Método estático responsável por fechar a instância privada de
      * EntityManager.
      *
+     * @param manager
      */
-    public static void closeEntityManager() {
+    public void closeEntityManager(@Disposes EntityManager manager) {
         try {
-            if(em.isOpen() || em != null){
-                em.close();
-            }
+            manager.close();
         } catch (Exception e) {
+            Mensagem.getInstance().erro("Erro ao fechar conexão"+e.getMessage());
         }
     }
 }

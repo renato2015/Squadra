@@ -3,8 +3,8 @@ package br.com.squadra.teste;
 import br.com.squadra.dao.DAOUsuarios;
 import br.com.squadra.entities.BeanUsuarios;
 import br.com.squadra.util.Mensagem;
-import br.com.squadra.util.PersistenceFactory;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import org.junit.Test;
 
@@ -14,14 +14,12 @@ import org.junit.Test;
  */
 public class TestUsuarios {
 
-    private EntityManager em = null;
-    BeanUsuarios bUsuario = new BeanUsuarios();
-
-    DAOUsuarios daoUsuarios = new DAOUsuarios();
-
-    public TestUsuarios() {
-        em = PersistenceFactory.createEntityManager();
-    }
+    @Inject
+    private EntityManager em;
+    @Inject
+    BeanUsuarios bUsuario;
+    @Inject
+    DAOUsuarios daoUsuarios;
 
 //    @Test
     public void salvar() {
@@ -46,13 +44,13 @@ public class TestUsuarios {
         }
     }
 
-//    @Test
+    @Test
     public void pesqId() {
         bUsuario = daoUsuarios.pesqId(em, 1);
         System.out.println("Nome:" + bUsuario.getNome());
     }
 
-    @Test
+//    @Test
     public void pesqNamedQuery() {
         bUsuario = daoUsuarios.pesqNamedQuery(em, "BeanUsuarios.findByNome","nome","renato",0);
         System.out.println("Nome: " + bUsuario.getNome());

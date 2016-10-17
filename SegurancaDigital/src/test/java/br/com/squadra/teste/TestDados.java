@@ -5,6 +5,7 @@ import br.com.squadra.entities.BeanDados;
 import br.com.squadra.util.Mensagem;
 import br.com.squadra.util.PersistenceFactory;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import org.junit.Test;
 
@@ -14,14 +15,11 @@ import org.junit.Test;
  */
 public class TestDados {
  
-    private EntityManager em = null;
+    @Inject
+    private EntityManager em;
     BeanDados bDados = new BeanDados();
 
     DAODados daoDados = new DAODados();
-
-    public TestDados() {
-        em = PersistenceFactory.createEntityManager();
-    }
 
 //    @Test
     public void salvar() {

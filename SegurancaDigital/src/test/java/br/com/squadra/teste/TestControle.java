@@ -8,6 +8,7 @@ import br.com.squadra.util.Mensagem;
 import br.com.squadra.util.PersistenceFactory;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import org.junit.Test;
 
@@ -17,16 +18,19 @@ import org.junit.Test;
  */
 public class TestControle {
 
-    private EntityManager em = null;
+    @Inject
+    private EntityManager em ;
+    
     BeanControle bControle = new BeanControle();
     BeanUsuarios bUsuarios = new BeanUsuarios();
 
-    DAOControle daoControle = new DAOControle();
-    DAOUsuarios daoUsuarios = new DAOUsuarios();
+    @Inject
+    DAOControle daoControle ;
+    
+    @Inject
+    DAOUsuarios daoUsuarios ;
 
-    public TestControle() {
-        em = PersistenceFactory.createEntityManager();
-    }
+    
 
 //    @Test
     public void salvar() {
