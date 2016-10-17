@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.squadra.entities;
 
 import java.io.Serializable;
@@ -26,7 +21,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Renato
+ * @author Renato Borges Cardoso
+ * @version 1.00
  */
 @Entity
 @Table(name = "controle")
