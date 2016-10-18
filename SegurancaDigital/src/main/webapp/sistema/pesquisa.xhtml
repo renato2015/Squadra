@@ -10,57 +10,83 @@
     <ui:define name="content">
         <h1 class="aw-page-title">Page Title</h1>
 
-        <h:form id="frm">
-            <div class="ui-fluid">
+        <div class="ui-fluid">
             <h:form id="formPesquisa">
+                <p:messages id="msgPesquisa" />
                 <p:fieldset legend="Manter sistema">
                     <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
                         <p:outputLabel value="Descrição" for="descricao" />
-                        <p:inputText id="descricao" value="" />
+                        <p:inputText id="descricao" value="#{MBDados.getbDados().descricao}" />
 
                         <p:outputLabel value="Sigla" for="sigla" />
-                        <p:inputText id="sigla" value="" />
+                        <p:inputText id="sigla" value="#{MBDados.getbDados().sigla}" />
 
                         <p:outputLabel value="Email de atendimento do sistema" for="email" />
-                        <p:inputText id="email" value="" >
+                        <p:inputText id="email" value="#{MBDados.getbDados().email}" validatorMessage="Informe um email valido">
+                            <p:ajax update="msgPesquisa" event="blur"  />
                             <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
                         </p:inputText>
                     </p:panelGrid>
                 </p:fieldset>
 
-
+                <p:spacer height="15" />
                 <p:panelGrid columns="4" columnClasses="ui-grid-col-6, ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
                     <p:outputLabel value="" />
-                    <p:commandButton value="Pesquisar" style="float: right" />
-                    <p:commandButton value="Limpar" style="float: right"/>
-                    <p:commandButton value="Novo sistema" style="float: right"  />
+                    <p:commandLink value="Pesquisar" action="#{MBDados.pesquisar()}" update="@form" process="@this" style="float: right" />
+                    <p:commandLink value="Limpar" action="#{MBDados.limpar()}" update="@form, msgPesquisa" style="float: right" process="@this"/>
+                    <p:link value="Novo sistema"  style="float: right" outcome="incluir" />
                 </p:panelGrid>
 
-                <p:fieldset legend="Resultado da consulta" rendered="true">
-                    <p:dataTable id="tablePesquisa"  paginator="true" rows="50">
+                <p:fieldset id="tabDados" legend="Resultado da consulta" rendered="#{MBDados.renderizarPesquisa}">
+                    <p:dataTable value="#{MBDados.listaDados}" id="tablePesquisa"  paginator="true" rows="50"
+                                 var="dados" emptyMessage="Nenhum Sistema foi encontrado. Favor revisar os critérios da sua pesquisa!">
                         <p:column headerText="Descrição">
-                            <p:outputLabel value="" />
+                            <p:outputLabel value="#{dados.descricao}" />
                         </p:column>
                         <p:column headerText="Sigla">
-                            <p:outputLabel value="" />
+                            <p:outputLabel value="#{dados.sigla}" />
                         </p:column>
                         <p:column headerText="Email">
-                            <p:outputLabel value="" />
+                            <p:outputLabel value="#{dados.email}" />
                         </p:column>
                         <p:column headerText="URL">
-                            <p:outputLabel value="" />
+                            <p:outputLabel value="#{dados.url}" />
                         </p:column>
                         <p:column headerText="Status">
-                            <p:outputLabel value="" />
+                            <p:outputLabel value="#{dados.status}" />
                         </p:column>
                         <p:column headerText="Ações">
-                            <p:outputLabel value="" />
+                            <p:link value="editar" outcome="alterar?id=#{dados.idDados}" >
+                                
+                            </p:link>
                         </p:column>
                     </p:dataTable>
                 </p:fieldset>
+
+                <!--Alterar-->
+                <p:fieldset id="fieldControle" rendered="#{MBDados.renderizarAlterar}" legend="Controle do sistema">
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
+                        <p:outputLabel value="" for="status"/>
+                        <p:selectOneMenu id="status">
+                            <f:selectItem itemLabel="Ativo" itemValue="A" />
+                            <f:selectItem itemLabel="Inativo" itemValue="I" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Usuário responsavel pela ultima alteração" for="usuario"/>
+                        <p:inputText id="usuario" />
+
+                        <p:outputLabel value="Data da última alteração" for="data"/>
+                        <p:inputText id="data" />
+
+                        <p:outputLabel value="Justificativa da ultima alteração" for="justificativa"/>
+                        <p:inputTextarea id="justificativa" />
+
+                        <p:outputLabel value="Nova justificativa de alteração" for="novaJsutificativa"/>
+                        <p:inputTextarea id="novaJsutificativa" />
+                    </p:panelGrid>
+                </p:fieldset>
             </h:form>
         </div>
-        </h:form>
     </ui:define>
 
 </ui:composition>

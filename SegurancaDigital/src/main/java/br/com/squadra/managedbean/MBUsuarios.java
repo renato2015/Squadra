@@ -4,10 +4,11 @@ import br.com.squadra.controller.ControllerUsuarios;
 import br.com.squadra.entities.BeanUsuarios;
 import br.com.squadra.util.Criptografia;
 import br.com.squadra.util.Mensagem;
+import br.com.squadra.util.PersistenceFactory;
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 
@@ -16,15 +17,19 @@ import javax.servlet.http.HttpSession;
  * @author Renato Borges Cardoso
  * @version 1.00
  */
-@ManagedBean(name = "usuario")
+@Named
+@SessionScoped
 public class MBUsuarios implements Serializable{
     
-    @Inject
-    private BeanUsuarios bUsuario;
-    @Inject
-    private EntityManager em;
+    private BeanUsuarios bUsuario = new BeanUsuarios();
+    
+    private EntityManager em = null;
     
     private String senha;
+
+    public MBUsuarios() {
+        em  = PersistenceFactory.createEntityManager();
+    }
 
     /**
      * Metodo para logar no sistema
@@ -34,11 +39,10 @@ public class MBUsuarios implements Serializable{
         try {
             bUsuario = ControllerUsuarios.getInstance().pesqId(em, bUsuario.getIdUsuario());
             if(bUsuario != null){
-                System.out.println(bUsuario.getSenha());
                 if(bUsuario.getSenha().equals(Criptografia.criptografiaSenha(senha))){
                     HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                     httpSession.setAttribute("usuario", bUsuario.getNome());
-                    return "sistema/pesquisa.xhtml";
+                    return "sistema/pesquisa.xhtml?faces-redirect=true";
                 }else{
                     Mensagem.getInstance().erro("Usuário sem permissão para entrar no sistema.");
                 }
@@ -58,7 +62,7 @@ public class MBUsuarios implements Serializable{
     public String deslogar(){
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.removeAttribute("usuario");
-        return "/index.xhtml";
+        return "/index.xhtml?faces-redirect=true";
     }
 
     

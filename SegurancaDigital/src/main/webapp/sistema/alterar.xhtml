@@ -1,57 +1,66 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Alterar</title>
-    </h:head>
-    <h:body>
-        <h:form id="formAlterar">
-            <h:messages id="msgAlterar" />
-            <div class="ui-fluid">
-            <p:fieldset legend="Manter sistema">
-                <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
-                    <p:outputLabel value="Descrição" for="descricao" />
-                    <p:inputText id="descricao" value="" required="true" requiredMessage="Campo descrição é obrigatório."/>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/Layout.xhtml">
 
-                    <p:outputLabel value="Sigla" for="sigla" />
-                    <p:inputText id="sigla" value="" />
+    <ui:define name="content">
+        <h1 class="aw-page-title">Page Title</h1>
 
-                    <p:outputLabel value="Email de atendimento do sistema" for="email" />
-                    <p:inputText id="email" value="" />
+        <div class="ui-fluid">
+            <h:form id="formAlterar">
+                <h:messages id="msgAlterar" />
+                <div class="ui-fluid">
+                    <p:fieldset legend="Manter sistema">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel value="Descrição" for="descricao" />
+                            <p:inputText id="descricao" value="" required="true" requiredMessage="Campo descrição é obrigatório."/>
 
-                    <p:outputLabel value="URL" for="url" />
-                    <p:inputText id="url" value="" />
-                </p:panelGrid>
-            </p:fieldset>
-                <br />
+                            <p:outputLabel value="Sigla" for="sigla" />
+                            <p:inputText id="sigla" value="#{MBControle.dadosSelecionado.sigla}" />
 
-            <p:fieldset legend="Controle do sistema">
-                <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
-                    <p:outputLabel value="" for="status"/>
-                    <p:selectOneMenu id="status">
-                        <f:selectItem itemLabel="Ativo" itemValue="A" />
-                        <f:selectItem itemLabel="Inativo" itemValue="I" />
-                    </p:selectOneMenu>
+                            <p:outputLabel value="Email de atendimento do sistema" for="email" />
+                            <p:inputText id="email" value="" />
 
-                    <p:outputLabel value="Usuário responsavel pela ultima alteração" for="usuario"/>
-                    <p:inputText id="usuario" />
+                            <p:outputLabel value="URL" for="url" />
+                            <p:inputText id="url" value="" />
+                        </p:panelGrid>
+                    </p:fieldset>
+                    <br />
 
-                    <p:outputLabel value="Data da última alteração" for="data"/>
-                    <p:inputText id="data" />
+                    <p:fieldset legend="Controle do sistema">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel value="" for="status"/>
+                            <p:selectOneMenu id="status">
+                                <f:selectItem itemLabel="Ativo" itemValue="A" />
+                                <f:selectItem itemLabel="Inativo" itemValue="I" />
+                            </p:selectOneMenu>
 
-                    <p:outputLabel value="Justificativa da ultima alteração" for="justificativa"/>
-                    <p:inputTextarea id="justificativa" />
+                            <p:outputLabel value="Usuário responsavel pela ultima alteração" for="usuario"/>
+                            <p:inputText id="usuario" />
 
-                    <p:outputLabel value="Nova justificativa de alteração" for="novaJsutificativa"/>
-                    <p:inputTextarea id="novaJsutificativa" />
-                </p:panelGrid>
-            </p:fieldset>
+                            <p:outputLabel value="Data da última alteração" for="data"/>
+                            <p:inputText id="data" />
+
+                            <p:outputLabel value="Justificativa da ultima alteração" for="justificativa"/>
+                            <p:inputTextarea id="justificativa" />
+
+                            <p:outputLabel value="Nova justificativa de alteração" for="novaJsutificativa"/>
+                            <p:inputTextarea id="novaJsutificativa" />
+                        </p:panelGrid>
+                    </p:fieldset>
+
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
+                        <p:link value="Voltar" outcome="pesquisa" style="float: left; width: 150px;"/>
+
+                        <p:commandLink value="Salvar" action="#{MBControle.salvar()}" style="float: right; width: 150px;" update="msgIncluir, @form" />
+                    </p:panelGrid>
+                </div>
+
+            </h:form>
         </div>
-
-        </h:form>
-    </h:body>
-</html>
-
+    </ui:define>
+</ui:composition>

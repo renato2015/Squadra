@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.com.squadra.entities;
 
 import java.io.Serializable;
@@ -16,8 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Renato Borges Cardoso
- * @version 1.00
+ * @author Atendimento
  */
 @Entity
 @Table(name = "dados")
@@ -26,9 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BeanDados.findAll", query = "SELECT b FROM BeanDados b"),
     @NamedQuery(name = "BeanDados.findByIdDados", query = "SELECT b FROM BeanDados b WHERE b.idDados = :idDados"),
     @NamedQuery(name = "BeanDados.findByDescricao", query = "SELECT b FROM BeanDados b WHERE b.descricao = :descricao"),
-    @NamedQuery(name = "BeanDados.findBySigla", query = "SELECT b FROM BeanDados b WHERE b.sigla = :sigla"),
     @NamedQuery(name = "BeanDados.findByEmail", query = "SELECT b FROM BeanDados b WHERE b.email = :email"),
-    @NamedQuery(name = "BeanDados.findByUrl", query = "SELECT b FROM BeanDados b WHERE b.url = :url")})
+    @NamedQuery(name = "BeanDados.findBySigla", query = "SELECT b FROM BeanDados b WHERE b.sigla = :sigla"),
+    @NamedQuery(name = "BeanDados.findByUrl", query = "SELECT b FROM BeanDados b WHERE b.url = :url"),
+    @NamedQuery(name = "BeanDados.findByStatus", query = "SELECT b FROM BeanDados b WHERE b.status = :status")})
 public class BeanDados implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,23 +42,24 @@ public class BeanDados implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_dados")
     private Integer idDados;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @Column(name = "descricao")
     private String descricao;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "sigla")
-    private String sigla;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 100)
     @Column(name = "email")
     private String email;
+    @Size(max = 10)
+    @Column(name = "sigla")
+    private String sigla;
     @Size(max = 50)
     @Column(name = "url")
     private String url;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "status")
+    private String status;
 
     public BeanDados() {
     }
@@ -62,10 +68,9 @@ public class BeanDados implements Serializable {
         this.idDados = idDados;
     }
 
-    public BeanDados(Integer idDados, String descricao, String sigla) {
+    public BeanDados(Integer idDados, String status) {
         this.idDados = idDados;
-        this.descricao = descricao;
-        this.sigla = sigla;
+        this.status = status;
     }
 
     public Integer getIdDados() {
@@ -84,14 +89,6 @@ public class BeanDados implements Serializable {
         this.descricao = descricao;
     }
 
-    public String getSigla() {
-        return sigla;
-    }
-
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -100,12 +97,28 @@ public class BeanDados implements Serializable {
         this.email = email;
     }
 
+    public String getSigla() {
+        return sigla;
+    }
+
+    public void setSigla(String sigla) {
+        this.sigla = sigla;
+    }
+
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

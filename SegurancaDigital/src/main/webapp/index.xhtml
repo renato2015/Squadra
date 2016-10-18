@@ -25,14 +25,14 @@
                                 <fieldset>
                                     <div class="form-group">
                                         <h:inputText class="form-control" a:placeholder="Usuário" id="email" 
-                                                     value="#{usuario.getbUsuario().idUsuario}" required="true" requiredMessage="Campo email é obrigatório."/>
+                                                     value="#{MBUsuarios.getbUsuario().idUsuario}" required="true" requiredMessage="Campo email é obrigatório."/>
                                     </div>
                                     <div class="form-group">
                                         <h:inputSecret class="form-control" a:placeholder="Password" id="password" 
-                                                     value="#{usuario.senha}" required="true" requiredMessage="Campo password é obrigatório."/>
+                                                       value="#{MBUsuarios.senha}" required="true" requiredMessage="Campo password é obrigatório."/>
                                     </div>
-                                    
-                                    <p:commandButton action="#{usuario.logar()}" update="msg"  class="btn btn-lg btn-success btn-block" value="Logar" />
+
+                                    <p:commandButton action="#{MBUsuarios.logar()}" update="msg"  class="btn btn-lg btn-success btn-block" value="Logar" />
                                 </fieldset>
                             </h:form>
                         </div>

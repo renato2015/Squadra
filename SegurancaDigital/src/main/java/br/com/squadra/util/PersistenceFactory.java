@@ -1,12 +1,8 @@
 package br.com.squadra.util;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Disposes;
-import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -27,9 +23,9 @@ public class PersistenceFactory {
      *
      * @return EntityManager
      */
-    @Produces
-    @RequestScoped
-    public EntityManager createEntityManager() {
+//    @Produces
+//    @RequestScoped
+    public static EntityManager createEntityManager() {
         return emf.createEntityManager();
     }
 
@@ -37,9 +33,9 @@ public class PersistenceFactory {
      * Método estático responsável por fechar a instância privada de
      * EntityManager.
      *
-     * @param manager
+     * @param manager @Disposes 
      */
-    public void closeEntityManager(@Disposes EntityManager manager) {
+    public static void closeEntityManager(EntityManager manager) {
         try {
             manager.close();
         } catch (Exception e) {
