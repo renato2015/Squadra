@@ -54,7 +54,7 @@ public class TestUsuarios {
 
 //    @Test
     public void pesqNamedQuery() {
-        bUsuario = daoUsuarios.pesqNamedQuery(em, "BeanUsuarios.findByNome","nome","renato",0);
+        bUsuario = daoUsuarios.pesqNamedQuery(em, "BeanUsuarios.findByNome", "nome", "renato", 0);
         System.out.println("Senha: " + bUsuario.getSenha());
     }
 

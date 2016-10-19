@@ -50,7 +50,7 @@ public class MBUsuarios implements Serializable{
                 Mensagem.getInstance().erro("Usuário não encontrado.");
             }
         } catch (Exception e) {
-            Mensagem.getInstance().erro(e.getMessage());
+            Mensagem.getInstance().erro("Erro ao realizar operação.");
         }
         return "";
     }

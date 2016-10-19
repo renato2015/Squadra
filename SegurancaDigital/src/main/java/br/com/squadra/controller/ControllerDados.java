@@ -76,6 +76,13 @@ public class ControllerDados {
         return DAODados.getInstance().pesqNamedQuery(em, namedQuery, param, valor, valorInt);
     }
     
+     /**
+     * Metodo que pesquisa com like, utilizado para autocomplete 
+     * @param em
+     * @param campo     
+     * @param valor     
+     * @return Lista de objeto
+     */
     public List<BeanDados> pesqComLike(EntityManager em, String campo, String valor){
         return DAODados.getInstance().pesqComLike(em, campo, valor);
     }

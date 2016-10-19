@@ -8,10 +8,13 @@ import br.com.squadra.entities.BeanUsuarios;
 import br.com.squadra.util.Mensagem;
 import br.com.squadra.util.PersistenceFactory;
 import java.io.Serializable;
+import java.util.Date;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -62,7 +65,27 @@ public class MBControle implements Serializable {
             novaJustificativa = "" ;
             Mensagem.getInstance().informativo("Operação realizada com sucesso.");
         } catch (Exception e) {
-            Mensagem.getInstance().erro("");
+            Mensagem.getInstance().erro("Erro ao realizar operação.");
+        } finally {
+            fechaConexao();
+        }
+    }
+
+    @PreUpdate
+    @PrePersist
+    public void alterar(BeanUsuarios bUsuario) {
+        try {
+            abreConexao();
+            em.getTransaction().begin();
+            bControle.setIdUsuario(bUsuario);
+            bControle.setJustificativa(novaJustificativa);
+//            bControle.setDataUltAlteracao(new Date());
+            ControllerControle.getInstance().alterar(em, bControle);
+            em.getTransaction().commit();
+            novaJustificativa = "" ;
+            Mensagem.getInstance().informativo("Operação realizada com sucesso.");
+        } catch (Exception e) {
+            Mensagem.getInstance().erro("Erro ao realizar operação.");
         } finally {
             fechaConexao();
         }

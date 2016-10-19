@@ -11,14 +11,14 @@
         <br />
         <div class="ui-fluid">
             <h:form id="formIncluir">
-                <h:messages id="msgIncluir" />
+                <p:messages id="msgIncluir" />
                 <p:fieldset legend="Dados do sistema">
                     <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
                         <p:outputLabel value="Descrição" for="descricao" />
-                        <p:inputText id="descricao" value="#{MBDados.getbDados().descricao}" />
+                        <p:inputText id="descricao" value="#{MBDados.getbDados().descricao}" required="true" requiredMessage="Dados obrigatórios não informados." />
 
                         <p:outputLabel value="Sigla" for="sigla" />
-                        <p:inputText id="sigla" value="#{MBDados.getbDados().sigla}" />
+                        <p:inputText id="sigla" value="#{MBDados.getbDados().sigla}" required="true" requiredMessage="Dados obrigatórios não informados."/>
 
                         <p:outputLabel value="Email de atendimento do sistema" for="email" />
                         <p:inputText id="email" value="#{MBDados.getbDados().email}" validatorMessage="Informe um email valido">
@@ -33,9 +33,10 @@
 
 
                 <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
-                    <p:link value="Voltar" outcome="pesquisa" style="float: left; width: 150px;"/>
+                    <p:link value="Voltar" outcome="pesquisa" style="float: left; width: 150px;" class="link"/>
 
-                    <p:commandLink value="Salvar" action="#{MBDados.salvar()}" style="float: right; width: 150px;" update="msgIncluir, @form" />
+                    <p:commandLink value="Salvar" action="#{MBDados.salvar()}" style="float: right; width: 150px;"
+                                   update="msgIncluir, @form" class="link" />
                 </p:panelGrid>
             </h:form>
         </div>

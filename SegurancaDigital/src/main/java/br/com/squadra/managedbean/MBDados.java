@@ -7,6 +7,7 @@ import br.com.squadra.util.PersistenceFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import org.primefaces.context.RequestContext;
@@ -17,7 +18,8 @@ import org.primefaces.context.RequestContext;
  * @version 1.00
  */
 @Named
-public class MBDados implements Serializable{
+@RequestScoped
+public class MBDados implements Serializable {
 
     private EntityManager em = null;
 
@@ -51,7 +53,7 @@ public class MBDados implements Serializable{
             limparIncluir();
             Mensagem.getInstance().informativo("Operação realizada com sucesso.");
         } catch (Exception e) {
-            Mensagem.getInstance().erro("" + e.getMessage());
+            Mensagem.getInstance().erro("Erro ao realizar operação.");
             em.getTransaction().rollback();
         } finally {
             fechaConexao();
@@ -65,7 +67,7 @@ public class MBDados implements Serializable{
             ControllerDados.getInstance().alterar(em, bDados);
             em.getTransaction().commit();
         } catch (Exception e) {
-            Mensagem.getInstance().erro("");
+            Mensagem.getInstance().erro("Erro ao realizar operação.");
             em.getTransaction().rollback();
         } finally {
             fechaConexao();
@@ -79,7 +81,7 @@ public class MBDados implements Serializable{
             listaDados = ControllerDados.getInstance().lista(em);
             em.getTransaction().commit();
         } catch (Exception e) {
-            Mensagem.getInstance().erro("");
+            Mensagem.getInstance().erro("Erro ao realizar operação.");
         } finally {
             fechaConexao();
         }
@@ -87,17 +89,26 @@ public class MBDados implements Serializable{
     }
 
     public void pesquisar() {
-        abreConexao();
-//        if(bDados.getDescricao() != null){
-//            listaDados = ControllerDados.getInstance().pesqComLike(em, "descricao", bDados.getDescricao());
-//        }
-//        fechaConexao();
-        listaDados = this.listaTudo();
+        try {
+            abreConexao();
+            if (bDados.getDescricao() != null) {
+                listaDados = ControllerDados.getInstance().pesqComLike(em, "descricao", bDados.getDescricao());
+            } else if (bDados.getSigla() != null) {
+                listaDados = ControllerDados.getInstance().pesqComLike(em, "sigla", bDados.getDescricao());
+            } else if (bDados.getEmail() != null) {
+                listaDados = ControllerDados.getInstance().pesqComLike(em, "email", bDados.getDescricao());
+            }
+        } catch (Exception e) {
+            Mensagem.getInstance().erro("Erro ao realizar operação.");
+        } finally {
+            fechaConexao();
+        }
         renderizarPesquisa = true;
     }
 
     public void limpar() {
         RequestContext.getCurrentInstance().reset("formPesquisa");
+        renderizarPesquisa = false;
     }
 
     public void limparIncluir() {
