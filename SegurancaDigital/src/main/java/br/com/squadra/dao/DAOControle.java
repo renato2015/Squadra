@@ -81,4 +81,25 @@ public class DAOControle implements DAOInterface<BeanControle>{
         return (BeanControle) query.getSingleResult();
     }
     
+    @Override
+    public BeanControle pesqUltimoRegistro(EntityManager em) {
+        Query query = em.createQuery("SELECT o FROM BeanControle o ORDER BY o.idControle DESC ");
+        return (BeanControle) query.setMaxResults(1).getSingleResult();
+    }
+    
+    /**
+     * Metodo que pesquisa com like, utilizado para autocomplete 
+     * @param em
+     * @param campo     
+     * @param valor     
+     * @return Lista de objeto
+     */
+    @Override
+    public List<BeanControle> pesqComLike(EntityManager em, String campo, String valor){
+        String hql = "FROM BeanControle o WHERE o." + campo + " LIKE '%" + valor + "%'"  ;
+        Query query = em.createQuery(hql);
+//      query.setParameter("param", "'%" + valor + "%'");
+        return query.getResultList();
+    }
+    
 }

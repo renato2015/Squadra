@@ -75,5 +75,9 @@ public class ControllerDados {
     public BeanDados pesqNamedQuery(EntityManager em, String namedQuery, String param, String valor, int valorInt) {
         return DAODados.getInstance().pesqNamedQuery(em, namedQuery, param, valor, valorInt);
     }
+    
+    public List<BeanDados> pesqComLike(EntityManager em, String campo, String valor){
+        return DAODados.getInstance().pesqComLike(em, campo, valor);
+    }
 
 }

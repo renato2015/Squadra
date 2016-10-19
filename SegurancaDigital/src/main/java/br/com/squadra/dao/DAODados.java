@@ -82,4 +82,25 @@ public class DAODados implements DAOInterface<BeanDados>{
         return (BeanDados) query.getSingleResult();
     }
     
+    @Override
+    public BeanDados pesqUltimoRegistro(EntityManager em) {
+        Query query = em.createQuery("SELECT o FROM BeanDados o ORDER BY o.idDados DESC LIMIT 1  ");
+        return (BeanDados) query.getSingleResult();
+    }
+    
+    /**
+     * Metodo que pesquisa com like, utilizado para autocomplete 
+     * @param em
+     * @param campo     
+     * @param valor     
+     * @return Lista de objeto
+     */
+    @Override
+    public List<BeanDados> pesqComLike(EntityManager em, String campo, String valor){
+        String hql = "FROM BeanDados o WHERE o." + campo + " LIKE '%" + valor + "%'"  ;
+        Query query = em.createQuery(hql);
+//      query.setParameter("param", "'%" + valor + "%'");
+        return query.getResultList();
+    }
+    
 }

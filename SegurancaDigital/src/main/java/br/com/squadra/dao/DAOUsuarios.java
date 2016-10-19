@@ -84,5 +84,27 @@ public class DAOUsuarios implements DAOInterface<BeanUsuarios>{
         return (BeanUsuarios) query.getSingleResult();
     }
 
+    @Override
+    public BeanUsuarios pesqUltimoRegistro(EntityManager em) {
+        Query query = em.createQuery("SELECT o FROM BeanUsuarios o ORDER BY o.idUsuario DESC LIMIT 1  ");
+        return (BeanUsuarios) query.getSingleResult();
+    }
+    
+    /**
+     * Metodo que pesquisa com like, utilizado para autocomplete 
+     * @param em
+     * @param campo     
+     * @param valor     
+     * @return Lista de objeto
+     */
+    @Override
+    public List<BeanUsuarios> pesqComLike(EntityManager em, String campo, String valor){
+        String hql = "FROM BeanUsuarios o WHERE o." + campo + " LIKE '%" + valor + "%'"  ;
+        Query query = em.createQuery(hql);
+//      query.setParameter("param", "'%" + valor + "%'");
+        return query.getResultList();
+    }
+
+
     
 }

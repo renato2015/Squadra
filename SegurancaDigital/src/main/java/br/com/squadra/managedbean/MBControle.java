@@ -1,7 +1,10 @@
 package br.com.squadra.managedbean;
 
+import br.com.squadra.controller.ControllerControle;
+import br.com.squadra.controller.ControllerDados;
 import br.com.squadra.entities.BeanControle;
 import br.com.squadra.entities.BeanDados;
+import br.com.squadra.entities.BeanUsuarios;
 import br.com.squadra.util.Mensagem;
 import br.com.squadra.util.PersistenceFactory;
 import java.io.Serializable;
@@ -18,82 +21,73 @@ import org.primefaces.context.RequestContext;
  */
 @Named
 @ViewScoped
-public class MBControle implements Serializable{
+public class MBControle implements Serializable {
+
     private EntityManager em = null;
-    
-    private BeanDados dadosSelecionado = new BeanDados();
-    
+
+    private BeanDados bDados = new BeanDados();
     private BeanControle bControle = new BeanControle();
 
-    public MBControle() {
-         String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap() .get("id");
-         System.out.println("ID:" + id);
-    }
+    private String novaJustificativa;
     
-    public void abreConexao(){
-        if(em == null){
+    public void abreConexao() {
+        if (em == null) {
             em = PersistenceFactory.createEntityManager();
         }
     }
-    
-    public void fechaConexao(){
-        if(em != null){
+
+    public void fechaConexao() {
+        if (em != null) {
             em.close();
             em = null;
         }
     }
-    
-    public void salvar(){
+
+    public MBControle() {
+        abreConexao();
+        String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+        bDados = ControllerDados.getInstance().pesqId(em, Integer.parseInt(id));
+        bControle = ControllerControle.getInstance().pesqUltimoRegistro(em);
+        fechaConexao();
+    }
+
+    public void salvar(BeanUsuarios bUsuario) {
         try {
             abreConexao();
+            em.getTransaction().begin();
+            bControle.setIdUsuario(bUsuario);
+            bControle.setJustificativa(novaJustificativa);
+            ControllerControle.getInstance().salvar(em, bControle);
+            em.getTransaction().commit();
+            novaJustificativa = "" ;
+            Mensagem.getInstance().informativo("Operação realizada com sucesso.");
         } catch (Exception e) {
             Mensagem.getInstance().erro("");
-        }finally{
+        } finally {
             fechaConexao();
         }
     }
     
-    public void alterar(){
-        try {
-            abreConexao();
-        } catch (Exception e) {
-            Mensagem.getInstance().erro("");
-        }finally{
-            fechaConexao();
-        }
-    }
-    
-    public void listaTudo(){
-        try {
-            abreConexao();
-        } catch (Exception e) {
-            Mensagem.getInstance().erro("");
-        }finally{
-            fechaConexao();
-        }
-    }
-    
-    public void limpar(){
-        RequestContext.getCurrentInstance().reset("");
+    public void limpar() {
+        RequestContext.getCurrentInstance().reset("formAlterar");
         bControle = null;
     }
 
-    
     public BeanControle getbControle() {
         return bControle;
     }
 
-    public void setbControle(BeanControle bControle) {
-        this.bControle = bControle;
-    }
-
-    public BeanDados getDadosSelecionado() {
-        return dadosSelecionado;
-    }
-
-    public void setDadosSelecionado(BeanDados dadosSelecionado) {
-        this.dadosSelecionado = dadosSelecionado;
+    public BeanDados getbDados() {
+        return bDados;
     }
     
+    public String getNovaJustificativa() {
+        return novaJustificativa;
+    }
+
+    public void setNovaJustificativa(String novaJustificativa) {
+        this.novaJustificativa = novaJustificativa;
+    }
     
+
 }

@@ -20,4 +20,9 @@ public interface DAOInterface<Entidade> {
     public List<Entidade> lista(EntityManager em);
     
     public Entidade pesqNamedQuery(EntityManager em, String namedQuery, String param, String valor,int valorInt);
-}
+    
+    public Entidade pesqUltimoRegistro(EntityManager em);
+    
+    public List<Entidade> pesqComLike(EntityManager em, String campo, String valor);
+    
+    }

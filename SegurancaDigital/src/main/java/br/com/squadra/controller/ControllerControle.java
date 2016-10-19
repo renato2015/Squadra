@@ -75,5 +75,9 @@ public class ControllerControle {
     public BeanControle pesqNamedQuery(EntityManager em, String namedQuery, String param, String valor, int valorInt) {
         return DAOControle.getInstance().pesqNamedQuery(em, namedQuery, param, valor, valorInt);
     }
+    
+    public BeanControle pesqUltimoRegistro(EntityManager em){
+        return DAOControle.getInstance().pesqUltimoRegistro(em);
+    }
 
 }

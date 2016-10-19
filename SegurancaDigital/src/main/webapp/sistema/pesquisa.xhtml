@@ -8,12 +8,12 @@
                 template="/WEB-INF/templates/Layout.xhtml">
 
     <ui:define name="content">
-        <h1 class="aw-page-title">Page Title</h1>
+        <br />
 
         <div class="ui-fluid">
             <h:form id="formPesquisa">
                 <p:messages id="msgPesquisa" />
-                <p:fieldset legend="Manter sistema">
+                <p:fieldset legend="Filtro da consulta">
                     <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
                         <p:outputLabel value="Descrição" for="descricao" />
                         <p:inputText id="descricao" value="#{MBDados.getbDados().descricao}" />
@@ -32,7 +32,7 @@
                 <p:spacer height="15" />
                 <p:panelGrid columns="4" columnClasses="ui-grid-col-6, ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
                     <p:outputLabel value="" />
-                    <p:commandLink value="Pesquisar" action="#{MBDados.pesquisar()}" update="@form" process="@this" style="float: right" />
+                    <p:commandLink value="Pesquisar" action="#{MBDados.pesquisar()}" update="tabDados, tablePesquisa" process="@this" style="float: right" />
                     <p:commandLink value="Limpar" action="#{MBDados.limpar()}" update="@form, msgPesquisa" style="float: right" process="@this"/>
                     <p:link value="Novo sistema"  style="float: right" outcome="incluir" />
                 </p:panelGrid>
@@ -57,33 +57,10 @@
                         </p:column>
                         <p:column headerText="Ações">
                             <p:link value="editar" outcome="alterar?id=#{dados.idDados}" >
-                                
+
                             </p:link>
                         </p:column>
                     </p:dataTable>
-                </p:fieldset>
-
-                <!--Alterar-->
-                <p:fieldset id="fieldControle" rendered="#{MBDados.renderizarAlterar}" legend="Controle do sistema">
-                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
-                        <p:outputLabel value="" for="status"/>
-                        <p:selectOneMenu id="status">
-                            <f:selectItem itemLabel="Ativo" itemValue="A" />
-                            <f:selectItem itemLabel="Inativo" itemValue="I" />
-                        </p:selectOneMenu>
-
-                        <p:outputLabel value="Usuário responsavel pela ultima alteração" for="usuario"/>
-                        <p:inputText id="usuario" />
-
-                        <p:outputLabel value="Data da última alteração" for="data"/>
-                        <p:inputText id="data" />
-
-                        <p:outputLabel value="Justificativa da ultima alteração" for="justificativa"/>
-                        <p:inputTextarea id="justificativa" />
-
-                        <p:outputLabel value="Nova justificativa de alteração" for="novaJsutificativa"/>
-                        <p:inputTextarea id="novaJsutificativa" />
-                    </p:panelGrid>
                 </p:fieldset>
             </h:form>
         </div>
