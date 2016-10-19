@@ -54,7 +54,7 @@
                 <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
                     <p:link value="Voltar" outcome="pesquisa" style="float: left; width: 150px;" class="link"/>
 
-                    <p:commandLink value="Salvar" action="#{MBControle.salvar(MBUsuarios.getbUsuario())}" 
+                    <p:commandLink value="Salvar" action="#{MBControle.alterar(MBUsuarios.getbUsuario())}" 
                                    style="float: right; width: 150px;" update="msgAlterar, @form" class="link"/>
                 </p:panelGrid>
             </h:form>

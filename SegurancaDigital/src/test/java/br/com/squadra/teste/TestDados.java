@@ -54,7 +54,7 @@ public class TestDados {
         System.out.println("Descrição:" + bDados.getDescricao());
     }
 
-    @Test
+//    @Test
     public void pesqNamedQuery() {
         bDados = daoDados.pesqNamedQuery(em, "BeanDados.findByDescricao", "descricao", "Dado 1", 0);
         System.out.println("Descrição: " + bDados.getDescricao());

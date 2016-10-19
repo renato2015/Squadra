@@ -66,7 +66,7 @@ public class TestControle {
          System.out.println("Justificativa:" + bControle.getJustificativa());
      }
  
-     @Test
+//     @Test
      public void pesqNamedQuery() {
          bControle = daoControle.pesqNamedQuery(em, "BeanControle.findByJustificativa", "justificativa", "Teste justificativa", 0);
          System.out.println("Justificativa: " + bControle.getJustificativa());

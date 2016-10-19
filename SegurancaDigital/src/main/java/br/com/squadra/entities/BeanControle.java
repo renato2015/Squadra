@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.com.squadra.entities;
 
 import java.io.Serializable;
@@ -15,14 +20,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Renato Borges Cardoso
- * @version 1.00
+ * @author Atendimento
  */
 @Entity
 @Table(name = "controle")
@@ -30,9 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "BeanControle.findAll", query = "SELECT b FROM BeanControle b"),
     @NamedQuery(name = "BeanControle.findByIdControle", query = "SELECT b FROM BeanControle b WHERE b.idControle = :idControle"),
-    @NamedQuery(name = "BeanControle.findByStatus", query = "SELECT b FROM BeanControle b WHERE b.status = :status"),
     @NamedQuery(name = "BeanControle.findByDataUltAlteracao", query = "SELECT b FROM BeanControle b WHERE b.dataUltAlteracao = :dataUltAlteracao"),
-    @NamedQuery(name = "BeanControle.findByJustificativa", query = "SELECT b FROM BeanControle b WHERE b.justificativa = :justificativa")})
+    @NamedQuery(name = "BeanControle.findByJustificativa", query = "SELECT b FROM BeanControle b WHERE b.justificativa = :justificativa"),
+    @NamedQuery(name = "BeanControle.findByStatus", query = "SELECT b FROM BeanControle b WHERE b.status = :status")})
 public class BeanControle implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,22 +44,16 @@ public class BeanControle implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_controle")
     private Integer idControle;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "status")
-    private Character status;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "data_ult_alteracao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataUltAlteracao;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
+    @Size(max = 500)
     @Column(name = "justificativa")
     private String justificativa;
+    @Column(name = "status")
+    private Character status;
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private BeanUsuarios idUsuario;
 
     public BeanControle() {
@@ -66,27 +63,12 @@ public class BeanControle implements Serializable {
         this.idControle = idControle;
     }
 
-    public BeanControle(Integer idControle, Character status, Date dataUltAlteracao, String justificativa) {
-        this.idControle = idControle;
-        this.status = status;
-        this.dataUltAlteracao = dataUltAlteracao;
-        this.justificativa = justificativa;
-    }
-
     public Integer getIdControle() {
         return idControle;
     }
 
     public void setIdControle(Integer idControle) {
         this.idControle = idControle;
-    }
-
-    public Character getStatus() {
-        return status;
-    }
-
-    public void setStatus(Character status) {
-        this.status = status;
     }
 
     public Date getDataUltAlteracao() {
@@ -103,6 +85,14 @@ public class BeanControle implements Serializable {
 
     public void setJustificativa(String justificativa) {
         this.justificativa = justificativa;
+    }
+
+    public Character getStatus() {
+        return status;
+    }
+
+    public void setStatus(Character status) {
+        this.status = status;
     }
 
     public BeanUsuarios getIdUsuario() {

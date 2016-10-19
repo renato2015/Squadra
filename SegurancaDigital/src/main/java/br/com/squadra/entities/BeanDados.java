@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -55,9 +54,7 @@ public class BeanDados implements Serializable {
     @Size(max = 50)
     @Column(name = "url")
     private String url;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "status")
     private String status;
 
@@ -66,11 +63,6 @@ public class BeanDados implements Serializable {
 
     public BeanDados(Integer idDados) {
         this.idDados = idDados;
-    }
-
-    public BeanDados(Integer idDados, String status) {
-        this.idDados = idDados;
-        this.status = status;
     }
 
     public Integer getIdDados() {

@@ -3,11 +3,11 @@ package br.com.squadra.managedbean;
 import br.com.squadra.controller.ControllerDados;
 import br.com.squadra.entities.BeanDados;
 import br.com.squadra.util.Mensagem;
-import br.com.squadra.util.PersistenceFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import org.primefaces.context.RequestContext;
@@ -18,10 +18,11 @@ import org.primefaces.context.RequestContext;
  * @version 1.00
  */
 @Named
-@RequestScoped
+@ViewScoped
 public class MBDados implements Serializable {
 
-    private EntityManager em = null;
+    @Inject
+    private EntityManager em;
 
     private BeanDados bDados = new BeanDados();
     private BeanDados dadosSelecionado = new BeanDados();
@@ -30,22 +31,8 @@ public class MBDados implements Serializable {
 
     private boolean renderizarPesquisa = false;
 
-    public void abreConexao() {
-        if (em == null) {
-            em = PersistenceFactory.createEntityManager();
-        }
-    }
-
-    public void fechaConexao() {
-        if (em != null) {
-            em.close();
-            em = null;
-        }
-    }
-
     public void salvar() {
         try {
-            abreConexao();
             em.getTransaction().begin();
             bDados.setStatus("ATIVO");
             ControllerDados.getInstance().salvar(em, bDados);
@@ -54,43 +41,30 @@ public class MBDados implements Serializable {
             Mensagem.getInstance().informativo("Operação realizada com sucesso.");
         } catch (Exception e) {
             Mensagem.getInstance().erro("Erro ao realizar operação.");
-            em.getTransaction().rollback();
-        } finally {
-            fechaConexao();
-        }
+        } 
     }
 
     public void alterar() {
         try {
-            abreConexao();
             em.getTransaction().begin();
             ControllerDados.getInstance().alterar(em, bDados);
             em.getTransaction().commit();
         } catch (Exception e) {
             Mensagem.getInstance().erro("Erro ao realizar operação.");
-            em.getTransaction().rollback();
-        } finally {
-            fechaConexao();
         }
     }
 
     public List<BeanDados> listaTudo() {
         try {
-            abreConexao();
-            em.getTransaction().begin();
             listaDados = ControllerDados.getInstance().lista(em);
-            em.getTransaction().commit();
         } catch (Exception e) {
             Mensagem.getInstance().erro("Erro ao realizar operação.");
-        } finally {
-            fechaConexao();
         }
         return listaDados;
     }
 
     public void pesquisar() {
         try {
-            abreConexao();
             if (bDados.getDescricao() != null) {
                 listaDados = ControllerDados.getInstance().pesqComLike(em, "descricao", bDados.getDescricao());
             } else if (bDados.getSigla() != null) {
@@ -100,8 +74,6 @@ public class MBDados implements Serializable {
             }
         } catch (Exception e) {
             Mensagem.getInstance().erro("Erro ao realizar operação.");
-        } finally {
-            fechaConexao();
         }
         renderizarPesquisa = true;
     }
