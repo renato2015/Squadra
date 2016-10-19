@@ -4,10 +4,10 @@ import br.com.squadra.controller.ControllerUsuarios;
 import br.com.squadra.entities.BeanUsuarios;
 import br.com.squadra.util.Criptografia;
 import br.com.squadra.util.Mensagem;
-import br.com.squadra.util.PersistenceFactory;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
@@ -23,13 +23,10 @@ public class MBUsuarios implements Serializable{
     
     private BeanUsuarios bUsuario = new BeanUsuarios();
     
-    private EntityManager em = null;
+    @Inject
+    private EntityManager em;
     
     private String senha;
-
-    public MBUsuarios() {
-        em  = PersistenceFactory.createEntityManager();
-    }
 
     /**
      * Metodo para logar no sistema
